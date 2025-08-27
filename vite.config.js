@@ -3,10 +3,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  root: '.', // Ensure project root is set
   plugins: [react()],
+  
+  // Development server config
   server: {
-    host: '0.0.0.0', // Bind to all interfaces
+    host: '0.0.0.0',
     port: 3000,
     proxy: {
       '/api': {
@@ -20,10 +21,25 @@ export default defineConfig({
       },
     },
   },
+  
+  // Build configuration
   build: {
     outDir: 'dist',
     sourcemap: true,
+    assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+        },
+      },
+    },
   },
+  
+  // Base URL for assets
+  base: './',
+  
   resolve: {
     alias: {
       '@': '/src',
