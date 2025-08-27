@@ -294,10 +294,13 @@ def paginated_response(items, page, per_page, total, endpoint=None):
 frontend/
 ├── src/
 │   ├── components/
+│   │   ├── auth/
+│   │   │   ├── ProjectedRoute.jsx
 │   │   ├── common/
 │   │   │   ├── Header.jsx
 │   │   │   ├── Sidebar.jsx
 │   │   │   ├── LoadingSpinner.jsx
+│   │   │   ├── NotificationToast.Jsx
 │   │   │   └── ErrorBoundary.jsx
 │   │   ├── camera/
 │   │   │   ├── CameraDashboard.jsx
@@ -317,6 +320,8 @@ frontend/
 │   │   │   ├── SystemSettings.jsx
 │   │   │   ├── DetectionConfig.jsx
 │   │   │   └── PerformanceConfig.jsx
+│   │   ├── layout/
+│   │   │   ├── Layout.jsx
 │   │   ├── person-management/
 │   │   │   ├── PersonList.jsx
 │   │   │   ├── PersonCard.jsx
@@ -328,6 +333,10 @@ frontend/
 │   │       ├── ServiceHealth.jsx
 │   │       ├── PerformanceMetrics.jsx
 │   │       └── SystemControls.jsx
+│   ├── contexts/
+│   │   ├── AuthContext.jsx
+│   │   ├── NotificationContext.jsx
+│   │   ├── SocketContext.jsx
 │   ├── services/
 │   │   ├── api/
 │   │   │   ├── client.js
@@ -346,6 +355,12 @@ frontend/
 │   │   ├── useAuth.js
 │   │   ├── useCamera.js
 │   │   └── useRealtime.js
+│   ├── pages/
+│   │   ├── CameraManagement.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── PersonManagement.jsx
+│   │   ├── SystemSettings.jsx
 │   ├── utils/
 │   │   ├── constants.js
 │   │   ├── helpers.js
@@ -355,9 +370,11 @@ frontend/
 │   │   ├── components/
 │   │   └── themes/
 │   ├── App.jsx
+│   ├── index.css
 │   └── index.js
 ├── public/
 ├── package.json
+├── vite.config.js
 └── webpack.config.js
 ```
 
