@@ -1,18 +1,13 @@
-# Use Node.js 18 as the base image (matches React 18 requirements)
-FROM node:18-alpine
-
-# Set working directory
+# Stage 1: build
+FROM node:18 as build
 WORKDIR /app
-
-# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
-
-# Copy the rest of the application code
 COPY . .
+RUN npm run build
 
-# Expose the Vite dev server port
-EXPOSE 3000
-
-# Run the dev server
-CMD ["npm", "run", "dev"]
+# Stage 2: serve
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
