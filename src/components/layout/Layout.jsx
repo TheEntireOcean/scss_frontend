@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Header from './Header'
-import Sidebar from './Sidebar'
-import NotificationToast from './NotificationToast'
+import Header from '../common/Header'
+import Sidebar from '../common/Sidebar'
+import NotificationToast from '../common/NotificationToast'
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
