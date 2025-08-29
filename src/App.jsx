@@ -1,4 +1,4 @@
-// src/App/jsx
+// src/App.jsx - Enhanced version
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './contexts/AuthContext'
@@ -9,6 +9,9 @@ import CameraManagement from './pages/CameraManagement'
 import PersonManagement from './pages/PersonManagement'
 import SystemSettings from './pages/SystemSettings'
 import LoadingSpinner from './components/common/LoadingSpinner'
+// Development only
+const TestPage = React.lazy(() => import('./pages/TestPage'))
+import ErrorBoundary from './components/common/ErrorBoundary'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 
 function App() {
@@ -17,34 +20,49 @@ function App() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <LoadingSpinner size="large" />
+        <div className="text-center">
+          <LoadingSpinner size="large" />
+          <p className="mt-4 text-white">Initializing system...</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="App">
-      <Routes>
-        <Route 
-          path="/login" 
-          element={!user ? <LoginPage /> : <Navigate to="/" replace />} 
-        />
-        
-        <Route path="/*" element={
-          <ProtectedRoute>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/cameras" element={<CameraManagement />} />
-                <Route path="/persons" element={<PersonManagement />} />
-                <Route path="/settings" element={<SystemSettings />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
-            </Layout>
-          </ProtectedRoute>
-        } />
-      </Routes>
-    </div>
+    <ErrorBoundary>
+      <div className="App">
+        <Routes>
+          <Route 
+            path="/login" 
+            element={!user ? <LoginPage /> : <Navigate to="/" replace />} 
+          />
+          
+          <Route path="/*" element={
+            <ProtectedRoute>
+              <Layout>
+                <ErrorBoundary>
+                  <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/cameras" element={<CameraManagement />} />
+                    <Route path="/persons" element={<PersonManagement />} />
+                    <Route path="/settings" element={<SystemSettings />} />
+                    {/* Development test page */}
+                    {process.env.NODE_ENV === 'development' && (
+                      <Route path="/test" element={
+                        <React.Suspense fallback={<LoadingSpinner size="large" />}>
+                          <TestPage />
+                        </React.Suspense>
+                      } />
+                    )}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                  </Routes>
+                </ErrorBoundary>
+              </Layout>
+            </ProtectedRoute>
+          } />
+        </Routes>
+      </div>
+    </ErrorBoundary>
   )
 }
 

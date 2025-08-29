@@ -9,7 +9,8 @@
     "axios": "^1.5.0",
     "socket.io-client": "^4.7.2",
     "@heroicons/react": "^2.0.18",
-    "clsx": "^2.0.0"
+    "clsx": "^2.0.0",
+    "react-error-boundary": "^4.0.11"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.0.3",
@@ -28,7 +29,9 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
   },
   "browserslist": {
     "production": [
@@ -41,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }

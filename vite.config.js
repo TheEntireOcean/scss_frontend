@@ -5,7 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   
-  // Development server config
   server: {
     host: '0.0.0.0',
     port: 3000,
@@ -13,32 +12,31 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5000',
         changeOrigin: true,
+        secure: false,
+        ws: false, // Disable websocket proxying for API calls
       },
       '/socket.io': {
         target: 'http://localhost:5000',
         ws: true,
         changeOrigin: true,
+        secure: false,
       },
     },
   },
   
-  // Build configuration
   build: {
     outDir: 'dist',
     sourcemap: true,
-    assetsDir: 'assets',
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
+          socket: ['socket.io-client'],
         },
       },
     },
   },
-  
-  // Base URL for assets
-  base: './',
   
   resolve: {
     alias: {
