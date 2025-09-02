@@ -10,13 +10,6 @@ import SystemAlerts from '../components/system/SystemAlerts';
 import PerformanceOverview from '../components/system/PerformanceOverview';
 
 
-// const Dashboard = () => {
-//   const { connected, requestSystemStatus } = useSocket();
-
-//   useEffect(() => {
-//     if (connected) requestSystemStatus();
-//   }, [connected]);
-
 const Dashboard = () => {
   const { connected, requestSystemStatus } = useSocket()
   const { info } = useNotifications()
@@ -29,11 +22,19 @@ const Dashboard = () => {
     recognitionCount24h: 0
   })
 
+  // Request system status once connected
   useEffect(() => {
     if (connected) {
       requestSystemStatus()
     }
   }, [connected, requestSystemStatus])
+
+  // Listen for system_status updates
+  useEffect(() => {
+    const handleSystemStatus = (data) => setSystemStats(data)
+    on('system_status', handleSystemStatus)
+    return () => off('system_status', handleSystemStatus)
+  }, [on, off])
 
   const stats = [
     {
@@ -68,12 +69,12 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Dashboard</h1>
-        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-          Overview of your face recognition system
-        </p>
-      </div>
+      <div className="dashboard-layout grid grid-cols-4 gap-6">
+      <header className="col-span-4"><SystemControls /></header>
+      <aside className="col-span-1"><SystemAlerts /></aside>
+      <main className="col-span-3"><CameraGrid cameras={cameras} selectedCamera={selectedCamera} onCameraSelect={setSelectedCamera} onCameraUpdate={handleUpdate} /></main>
+      <footer className="col-span-4"><PerformanceOverview /></footer>
+    </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -124,10 +125,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <header><SystemControls /></header>
-      <aside><SystemAlerts /></aside>
-      <main><CameraGrid /* props as in CameraDashboard if merging */ /></main>
-      <footer><PerformanceOverview /></footer>
     </div>
   )
 }

@@ -91,6 +91,12 @@ export const SocketProvider = ({ children }) => {
     }
   }
 
+  // Now you can safely use on/off
+  const onSystemAlert = (callback) => on('SYSTEM_ALERT', callback);
+  const offSystemAlert = (callback) => off('SYSTEM_ALERT', callback);
+  const onPerformanceMetrics = (callback) => on('PERFORMANCE_METRICS', callback);
+  const offPerformanceMetrics = (callback) => off('PERFORMANCE_METRICS', callback);
+
   const value = {
     socket: socket.current,
     connected,
@@ -102,7 +108,11 @@ export const SocketProvider = ({ children }) => {
     stopCameraStream,
     on,
     off,
-  }
+    onSystemAlert,
+    offSystemAlert,
+    onPerformanceMetrics,
+    offPerformanceMetrics
+  };
 
   return (
     <SocketContext.Provider value={value}>
