@@ -43,6 +43,7 @@ function App() {
                 <ErrorBoundary>
                   <Routes>
                     <Route path="/" element={<Dashboard />} />
+                    <Route path="/cameras/:id" element={<SingleCameraView />} />
                     <Route path="/cameras" element={<CameraManagement />} />
                     <Route path="/persons" element={<PersonManagement />} />
                     <Route path="/settings" element={<SystemSettings />} />

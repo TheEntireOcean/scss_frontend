@@ -22,7 +22,7 @@
 ## Executive Summary
 
 The GUI Service is implemented as a full-stack application comprising:
-- **Backend**: Flask application with RESTful API, SocketIO, and direct PostgreSQL integration
+- **Backend**: Flask application with RESTful API, SocketIO, and direct PostgreSQL integration. Updates include dashboard layout with orchestration controls, live thumbnails, alerts, and metrics; a new single camera view with sidebars for recognition results and metrics; and improved real-time data integration via new hooks and components.
 - **Frontend**: React SPA with real-time streaming, overlays, and comprehensive camera management
 - **Streaming**: Multi-tier streaming architecture (WebRTC → RTSP conversion → WebSocket fallback)
 - **Authentication**: JWT-based authentication with role-based access control
@@ -35,10 +35,13 @@ The GUI Service is implemented as a full-stack application comprising:
 │                    GUI Service Architecture              │
 ├─────────────────────────────────────────────────────────────────┤
 │  Frontend (React)                                               │
-│  ├── Camera Dashboard (Single + Thumbnails)                     │
-│  ├── Real-time Overlays (Toggleable)                           │
+│  ├── Dashboard (Orchestration Controls, Camera Grid   │
+│  │   with Live Thumbnails, Centralized Alerts, Metrics Overview)│
+│  ├── Single Camera View (New: Full-Screen Display with Left/    │
+│  │   Right Sidebars for Metrics and Recognition Results)        │
+│  ├── Real-time Overlays (Toggleable)                            │
 │  ├── Configuration Management                                   │
-│  └── Person Management (Onboarding)                            │
+│  └── Person Management (Onboarding)                             │
 ├─────────────────────────────────────────────────────────────────┤
 │  Backend (Flask)                                                │
 │  ├── REST API with Flask-RESTful                               │
@@ -379,6 +382,27 @@ frontend/
 ```
 
 ### Key Frontend Features
+
+> Dashboard Layout (Enhanced Control Panel):
+Integrated SystemControls.jsx for global actions (start/stop all cameras, reset config).
+CameraGrid.jsx with live thumbnails using react-window for virtualization (scalable to 500+ cameras).
+SystemAlerts.jsx for centralized real-time alerts via SocketIO 'SYSTEM_ALERT' events.
+PerformanceOverview.jsx for real-time system metrics overview (CPU, memory, avg FPS), with polling and SocketIO 'PERFORMANCE_METRICS' updates.
+
+> Single Camera View Layout (New Full-Screen Single Camera):
+Implemented in SingleCameraView.jsx with routing (/cameras/:id).
+Full-screen CameraPlayer.jsx display with OverlayControls.
+Right sidebar: RecognitionSidebar.jsx displaying cards for each recognition (track ID, name, confidence, pose, face size).
+Left sidebar: MetricsSidebar.jsx with camera-specific (FPS, resolution, latency) and process metrics (CPU, memory, detection/recognition performance).
+
+> Real-time Data Integration:
+Enhanced SocketContext.jsx with new events ('SYSTEM_ALERT', 'PERFORMANCE_METRICS', 'CAMERA_METRICS_UPDATE').
+New hooks: useCamera.js for camera data fetching and actions; useRealtime.js for subscribing to detections, recognitions, tracks, and metrics via SocketIO.
+
+> Component Structure Updates:
+Updated Dashboard.jsx to include new components in layout.
+Updated CameraGrid.jsx with react-window for performance.
+Integrated into App.jsx with new route for SingleCameraView.
 
 #### 1. API Service Layer
 ```javascript
@@ -1301,6 +1325,7 @@ spec:
    - Camera grid layout
    - Basic controls
    - Navigation structure
+   - Add layout skeletons for enhanced dashboard and single camera view.
 
 ### Phase 4: Camera Management (Week 6-7)
 1. **Camera Discovery**
@@ -1411,6 +1436,7 @@ spec:
 - **Styling**: CSS Modules + Tailwind CSS
 - **Build Tool**: Webpack 5
 - **Testing**: Jest + React Testing Library
+- react-window for virtualization in CameraGrid
 
 ### Infrastructure Technologies
 - **Containerization**: Docker + Docker Compose

@@ -4,6 +4,19 @@ import { useSocket } from '../contexts/SocketContext'
 import { useNotifications } from '../contexts/NotificationContext'
 import { ChartBarIcon, VideoCameraIcon, UserGroupIcon, CpuChipIcon } from '@heroicons/react/24/outline'
 
+import CameraGrid from '../components/camera/CameraGrid';
+import SystemControls from '../components/system/SystemControls';
+import SystemAlerts from '../components/system/SystemAlerts';
+import PerformanceOverview from '../components/system/PerformanceOverview';
+
+
+// const Dashboard = () => {
+//   const { connected, requestSystemStatus } = useSocket();
+
+//   useEffect(() => {
+//     if (connected) requestSystemStatus();
+//   }, [connected]);
+
 const Dashboard = () => {
   const { connected, requestSystemStatus } = useSocket()
   const { info } = useNotifications()
@@ -111,6 +124,10 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <header><SystemControls /></header>
+      <aside><SystemAlerts /></aside>
+      <main><CameraGrid /* props as in CameraDashboard if merging */ /></main>
+      <footer><PerformanceOverview /></footer>
     </div>
   )
 }

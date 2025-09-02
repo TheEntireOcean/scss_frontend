@@ -101,7 +101,7 @@ export const SocketProvider = ({ children }) => {
     startCameraStream,
     stopCameraStream,
     on,
-    off
+    off,
   }
 
   return (
@@ -118,3 +118,11 @@ export const useSocket = () => {
   }
   return context
 }
+
+// In SocketProvider, add to value:
+const onSystemAlert = (callback) => on('SYSTEM_ALERT', callback);
+const offSystemAlert = (callback) => off('SYSTEM_ALERT', callback);
+const onPerformanceMetrics = (callback) => on('PERFORMANCE_METRICS', callback);
+const offPerformanceMetrics = (callback) => off('PERFORMANCE_METRICS', callback);
+
+// ... add to value: onSystemAlert, offSystemAlert, onPerformanceMetrics, offPerformanceMetrics

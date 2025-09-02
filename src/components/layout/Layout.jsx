@@ -1,3 +1,4 @@
+// src/components/layout/Layout.jsx
 import React, { useState } from 'react'
 import Header from '../common/Header'
 import Sidebar from '../common/Sidebar'
